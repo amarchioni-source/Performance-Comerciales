@@ -152,6 +152,29 @@
 
   footer { padding: 20px 0 56px; color: var(--ink-dim); font-size: 12.5px; }
 
+  @media (max-width: 640px) {
+    .mini-block { min-width: 0; }
+    table.mini-table { min-width: 0; width: 100%; }
+    table.mini-table td, table.mini-table th { font-size: 11.5px; padding: 6px 4px; }
+    .lbl-sm { max-width: 90px; }
+    table.data-table { min-width: 0; width: 100%; }
+    table.data-table thead { display: none; }
+    table.data-table tbody, table.data-table tr, table.data-table td { display: block; width: 100%; }
+    table.data-table tr:not(.tipo-row) {
+      border: 1px solid var(--border-soft); border-radius: 6px; padding: 8px 10px; margin: 8px 0;
+    }
+    table.data-table tr.tipo-row { margin: 14px 0 4px; }
+    table.data-table tr.tipo-row td { padding: 8px 10px; }
+    table.data-table td { padding: 3px 0; white-space: normal; border: none; }
+    table.data-table td.lbl { font-size: 14px; margin-bottom: 2px; }
+    table.data-table td.bar-cell { display: none; }
+    table.data-table td[data-label]:not(.lbl)::before {
+      content: attr(data-label); color: var(--ink-dim); font-size: 11.5px; font-weight: 500;
+      display: inline-block; min-width: 110px;
+    }
+    table.data-table td.num { display: flex; align-items: center; }
+  }
+
   @media (max-width: 900px) {
     .kpi { flex: 1 1 45%; }
     .com-stat { flex: 1 1 45%; }
@@ -357,12 +380,12 @@ function renderPais(paisName) {
     const itemRows = grp.items.map(g => {
       const w = maxVal ? 100*g.val/maxVal : 0;
       return `<tr>
-        <td class="lbl">${g.k}</td>
-        <td class="num">${fmtKg(g.vol)}</td>
-        <td class="bar-cell"><div class="bar-track"><div class="bar" style="width:${w.toFixed(1)}%"></div></div></td>
-        <td class="num">${fmtUsd(g.val)}</td>
-        <td class="num">${fmtPrice(g.up)}</td>
-        <td class="num muted">${g.ord}</td>
+        <td class="lbl" data-label="">${g.k}</td>
+        <td class="num" data-label="Volumen (kg)">${fmtKg(g.vol)}</td>
+        <td class="bar-cell" data-label="% del valor"><div class="bar-track"><div class="bar" style="width:${w.toFixed(1)}%"></div></div></td>
+        <td class="num" data-label="Valor (USD)">${fmtUsd(g.val)}</td>
+        <td class="num" data-label="P. unitario">${fmtPrice(g.up)}</td>
+        <td class="num muted" data-label="Órdenes">${g.ord}</td>
       </tr>`;
     }).join('');
     return groupRow + itemRows;
